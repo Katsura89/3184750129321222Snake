@@ -97,6 +97,7 @@ public class GameThread extends Thread {
                         if(e.getMessage().equals("Game Over!")) {
                             _isGameOver = true;
                             setHighscore();
+                            _fps = 30;
                         }
                     }
                 }
