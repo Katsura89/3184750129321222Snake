@@ -93,5 +93,18 @@ public class BodyPart extends GameObject {
                 this.PosX += GameConstants.MOVEMENT_SPEED;
                 break;
         }
+
+        if(this.PosX < 0 && this.MovingDirection == katsura.snake.MovingDirection.Left) {
+            this.PosX = GameConstants.DISPLAY_RESOLUTION_X;
+        }
+        else if(this.PosX > GameConstants.DISPLAY_RESOLUTION_X && this.MovingDirection == katsura.snake.MovingDirection.Right) {
+            this.PosX = 0;
+        }
+        else if(this.PosY < 0 && this.MovingDirection == katsura.snake.MovingDirection.UP) {
+            this.PosY = GameConstants.DISPLAY_RESOLUTION_Y;
+        }
+        else if(this.PosY > GameConstants.DISPLAY_RESOLUTION_Y && this.MovingDirection == katsura.snake.MovingDirection.Down) {
+            this.PosY = 0;
+        }
     }
 }

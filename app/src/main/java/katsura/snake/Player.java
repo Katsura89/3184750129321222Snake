@@ -42,8 +42,6 @@ public class Player extends GameObject {
     }
 
     public void update() throws Exception {
-        _animation.update();
-
         if(this.getMovingDirection() != null) {
             switch (this.getMovingDirection()) {
                 case Up:
@@ -62,16 +60,16 @@ public class Player extends GameObject {
         }
 
         if(this.PosX < 0 && this.MovingDirection == katsura.snake.MovingDirection.Left) {
-            throw new Exception("Game Over!");
+            this.PosX = GameConstants.DISPLAY_RESOLUTION_X;
         }
         else if(this.PosX > GameConstants.DISPLAY_RESOLUTION_X && this.MovingDirection == katsura.snake.MovingDirection.Right) {
-            throw new Exception("Game Over!");
+            this.PosX = 0;
         }
-        else if(this.PosY < 0 && this.MovingDirection == katsura.snake.MovingDirection.UP) {
-            throw new Exception("Game Over!");
+        else if(this.PosY < 0 && this.MovingDirection == katsura.snake.MovingDirection.Up) {
+            this.PosY = GameConstants.DISPLAY_RESOLUTION_Y;
         }
         else if(this.PosY > GameConstants.DISPLAY_RESOLUTION_Y && this.MovingDirection == katsura.snake.MovingDirection.Down) {
-            throw new Exception("Game Over!");
+            this.PosY = 0;
         }
     }
 
