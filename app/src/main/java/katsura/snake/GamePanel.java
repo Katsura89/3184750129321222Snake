@@ -1,6 +1,7 @@
 package katsura.snake;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,6 +30,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private BodyPart _nextBodyPart;
 
     private List<BodyPart> _bodyParts;
+
+    private Background _background;
 
     public  GamePanel(Context context) {
         super(context);
@@ -60,8 +63,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        //_player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
-        _player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.coin2));
+        _player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
 
         WindowManager wm = (WindowManager)_context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -73,6 +75,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         GameConstants.DISPLAY_RESOLUTION_X = _displayWidth;
         GameConstants.DISPLAY_RESOLUTION_Y = _displayHeight;
+
+        _background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background), _displayWidth, _displayHeight);
 
         _gameThread.setRunning(true);
         _gameThread.start();
@@ -137,7 +141,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         if(_nextBodyPart == null){
-            _nextBodyPart = new BodyPart(BitmapFactory.decodeResource(getResources(), R.drawable.coin), _displayWidth - 75, _displayHeight - 75);
+            _nextBodyPart = new BodyPart(BitmapFactory.decodeResource(getResources(), R.drawable.bodypart), _displayWidth - 75, _displayHeight - 75);
         }
 
         GameObject lastUpdated = _player;
@@ -168,6 +172,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override public void draw(Canvas canvas) {
         super.draw(canvas);
+
+        _background.draw(canvas);
+
         _player.draw(canvas);
         _nextBodyPart.draw(canvas);
 
@@ -175,23 +182,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             _bodyParts.get(i).draw(canvas);
 
         Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         paint.setTextSize(75);
         canvas.drawText("Score: " + _gameThread.GetPlayerScore(), 40, 80, paint);
-
-        //final float scaleFactorX = getWidth() / (float)WIDTH;
-        //final float scaleFactorY = getHeight() / (float)HEIGHT;
-
-        //if(canvas != null) {
-            //final int savedState = canvas.save();
-            //canvas.scale(scaleFactorX, scaleFactorY);
-            //canvas.restoreToCount(savedState);
-        //}
     }
 
     public void GameOver(Canvas canvas) {
         Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         paint.setTextSize(75);
         canvas.drawText("Game Over!", 750, 500, paint);
     }

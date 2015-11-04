@@ -9,6 +9,11 @@ import android.graphics.Canvas;
 public class Player extends GameObject {
     private Animation _animation;
 
+    private Bitmap _imageFacingUp;
+    private Bitmap _imageFacingLeft;
+    private Bitmap _imageFacingRight;
+    private Bitmap _imageFacingDown;
+
     private long _startTime;
 
     public Player(Bitmap image) {
@@ -25,9 +30,10 @@ public class Player extends GameObject {
 
         Bitmap[] sprites = new Bitmap[1];
 
-        for (int i = 0; i < sprites.length; i++) {
-            sprites[i] = Bitmap.createBitmap(image, i * this.Width, 0, this.Width, this.Height);
-        }
+        _imageFacingUp = Bitmap.createBitmap(image, 0 * this.Width, 0, this.Width, this.Height);
+        _imageFacingLeft = Bitmap.createBitmap(image, 1 * this.Width, 0, this.Width, this.Height);
+        _imageFacingRight = Bitmap.createBitmap(image, 2 * this.Width, 0, this.Width, this.Height);
+        _imageFacingDown = Bitmap.createBitmap(image, 3 * this.Width, 0, this.Width, this.Height);
 
         _animation.setFrames(sprites);
         _animation.setDelay(500);
@@ -70,7 +76,19 @@ public class Player extends GameObject {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(_animation.getImage(), this.PosX, this.PosY, null);
+        switch (this.getMovingDirection()) {
+            case Up:
+                canvas.drawBitmap(_imageFacingUp, this.PosX, this.PosY, null);
+                break;
+            case Down:
+                canvas.drawBitmap(_imageFacingDown, this.PosX, this.PosY, null);
+                break;
+            case Left:
+                canvas.drawBitmap(_imageFacingLeft, this.PosX, this.PosY, null);
+                break;
+            case Right:
+                canvas.drawBitmap(_imageFacingRight, this.PosX, this.PosY, null);
+                break;
+        }
     }
-
 }

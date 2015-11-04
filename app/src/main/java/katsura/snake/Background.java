@@ -14,8 +14,8 @@ public class Background {
 
     private int _speed;
 
-    public Background(Bitmap image) {
-        _image = image;
+    public Background(Bitmap image, int width, int height) {
+        _image = Bitmap.createScaledBitmap(image, width, height, false);
     }
 
     public void update() {
