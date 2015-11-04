@@ -100,7 +100,7 @@ public class BodyPart extends GameObject {
         else if(this.PosX > GameConstants.DISPLAY_RESOLUTION_X && this.MovingDirection == katsura.snake.MovingDirection.Right) {
             this.PosX = 0;
         }
-        else if(this.PosY < 0 && this.MovingDirection == katsura.snake.MovingDirection.UP) {
+        else if(this.PosY < 0 && this.MovingDirection == katsura.snake.MovingDirection.Up) {
             this.PosY = GameConstants.DISPLAY_RESOLUTION_Y;
         }
         else if(this.PosY > GameConstants.DISPLAY_RESOLUTION_Y && this.MovingDirection == katsura.snake.MovingDirection.Down) {
