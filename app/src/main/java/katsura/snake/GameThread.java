@@ -16,6 +16,8 @@ public class GameThread extends Thread {
     private static Canvas _canvas;
     private int _playerScore = 0;
 
+    private boolean _isGameOver;
+
     private long getTargetTime() {
         return 1000 / _fps;
     }
@@ -40,6 +42,12 @@ public class GameThread extends Thread {
     }
 
     @Override public void run(){
+        startGameLoop();
+    }
+
+    public void startGameLoop() {
+        _isGameOver = false;
+
         long startTime;
         long timeMilliseconds;
         long waitTime;
@@ -55,13 +63,15 @@ public class GameThread extends Thread {
 
                 synchronized (_surfaceHolder){
                     try {
-                        _gamePanel.update();
+                        if(!_isGameOver) {
+                            _gamePanel.update();
+                        }
+
                         _gamePanel.draw(_canvas);
                     }
                     catch (Exception e) {
                         if(e.getMessage().equals("Game Over!")) {
-                            this.setRunning(false);
-                            _gamePanel.GameOver(_canvas);
+                            _isGameOver = true;
                         }
                     }
                 }
@@ -100,5 +110,17 @@ public class GameThread extends Thread {
 
     public void setRunning(boolean state) {
         _running = state;
+    }
+
+    public boolean getGameOver() {
+        return _isGameOver;
+    }
+
+    public void setGameOver(boolean state) {
+        _isGameOver = false;
+    }
+
+    public void setScore(int score) {
+        _playerScore = score;
     }
 }

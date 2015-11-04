@@ -46,7 +46,8 @@ public class Player extends GameObject {
             switch (this.getMovingDirection()) {
                 case Up:
                     this.PosY -= GameConstants.MOVEMENT_SPEED;
-                    break;
+                    throw new Exception("Game Over!");
+                    //break;
                 case Down:
                     this.PosY += GameConstants.MOVEMENT_SPEED;
                     break;

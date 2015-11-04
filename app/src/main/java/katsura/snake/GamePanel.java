@@ -82,6 +82,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         _gameThread.start();
     }
 
+    private void restartGame() {
+        _player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+
+        _bodyParts = new ArrayList<BodyPart>();
+
+        _gameThread.setScore(0);
+        _gameThread.setGameOver(false);
+    }
+
     long _lastKeyPressTime = System.nanoTime();
     boolean _lockMovement = false;
 
@@ -96,6 +105,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if (!_lockMovement) {
             _lockMovement = true;
             _lastKeyPressTime = System.nanoTime();
+
+            if(_gameThread.getGameOver()) {
+                restartGame();
+            }
 
             if (action == MotionEvent.ACTION_DOWN) {
                 float touchPosX = motionEvent.getX();
@@ -173,24 +186,28 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        _background.draw(canvas);
+        if(!_gameThread.getGameOver()) {
+            _background.draw(canvas);
 
-        _player.draw(canvas);
-        _nextBodyPart.draw(canvas);
+            _player.draw(canvas);
+            _nextBodyPart.draw(canvas);
 
-        for (int i = 0; i < _bodyParts.size(); i++)
-            _bodyParts.get(i).draw(canvas);
+            for (int i = 0; i < _bodyParts.size(); i++)
+                _bodyParts.get(i).draw(canvas);
 
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(75);
-        canvas.drawText("Score: " + _gameThread.GetPlayerScore(), 40, 80, paint);
-    }
+            Paint paint = new Paint();
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(75);
+            canvas.drawText("Score: " + _gameThread.GetPlayerScore(), 40, 80, paint);
+        }
+        else {
+            Paint paint = new Paint();
+            paint.setColor(Color.WHITE);
+            paint.setTextSize(150);
+            canvas.drawText("Game Over!", 550, 500, paint);
 
-    public void GameOver(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(75);
-        canvas.drawText("Game Over!", 750, 500, paint);
+            paint.setTextSize(50);
+            canvas.drawText("Your score: " + _gameThread.GetPlayerScore(), 775, 700, paint);
+        }
     }
 }
