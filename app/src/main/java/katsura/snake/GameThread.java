@@ -1,6 +1,7 @@
 package katsura.snake;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
@@ -15,12 +16,20 @@ public class GameThread extends Thread {
     private static Canvas _canvas;
     private int _playerScore = 0;
 
+    private long getTargetTime() {
+        return 1000 / _fps;
+    }
+
     public int GetPlayerScore() {
         return  _playerScore;
     }
 
     public void AddPlayerScore(int pointsToAdd) {
         _playerScore += pointsToAdd;
+
+        if((_playerScore % 100) == 0) {
+            _fps += 5;
+        }
     }
 
     public GameThread(SurfaceHolder surfaceHolder, GamePanel gamePanel) {
@@ -36,7 +45,6 @@ public class GameThread extends Thread {
         long waitTime;
         long totalTime = 0;
         long frameCount = 0;
-        long targetTime = 1000 / _fps;
 
         while (_running){
             startTime = System.nanoTime();
@@ -71,7 +79,7 @@ public class GameThread extends Thread {
             }
 
             timeMilliseconds = (System.nanoTime() - startTime) / 1000000;
-            waitTime = targetTime - timeMilliseconds;
+            waitTime = getTargetTime() - timeMilliseconds;
 
             try {
                 this.sleep(waitTime);
