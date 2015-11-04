@@ -37,7 +37,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
 
         _context = context;
-        _gameThread = new GameThread(getHolder(), this);
+        _gameThread = new GameThread(getHolder(), this, _context);
 
         _bodyParts = new ArrayList<BodyPart>();
 
@@ -197,8 +197,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             Paint paint = new Paint();
             paint.setColor(Color.BLACK);
-            paint.setTextSize(75);
-            canvas.drawText("Score: " + _gameThread.GetPlayerScore(), 40, 80, paint);
+            paint.setTextSize(50);
+
+            canvas.drawText("Highscore: " + _gameThread.getPlayerHighscore(), 40, 80, paint);
+
+            canvas.drawText("Score: " + _gameThread.GetPlayerScore(), 40, 140, paint);
         }
         else {
             Paint paint = new Paint();

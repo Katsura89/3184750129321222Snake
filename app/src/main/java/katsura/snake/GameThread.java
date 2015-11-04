@@ -1,5 +1,8 @@
 package katsura.snake;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -15,6 +18,8 @@ public class GameThread extends Thread {
     private boolean _running;
     private static Canvas _canvas;
     private int _playerScore = 0;
+
+    private Context _context;
 
     private boolean _isGameOver;
 
@@ -34,11 +39,30 @@ public class GameThread extends Thread {
         }
     }
 
-    public GameThread(SurfaceHolder surfaceHolder, GamePanel gamePanel) {
+    public int getPlayerHighscore() {
+        SharedPreferences sharedPref =  ((Activity)_context).getPreferences(Context.MODE_PRIVATE);
+        Integer highscore = sharedPref.getInt("Highscore", 0);
+
+        return highscore;
+    }
+
+    public void setHighscore() {
+        Integer highscore = getPlayerHighscore();
+
+        if(_playerScore > highscore) {
+            SharedPreferences sharedPref =  ((Activity)_context).getPreferences(((Activity)_context).MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("Highscore", _playerScore);
+            editor.commit();
+        }
+    }
+
+    public GameThread(SurfaceHolder surfaceHolder, GamePanel gamePanel, Context context) {
         super();
 
         _surfaceHolder = surfaceHolder;
         _gamePanel = gamePanel;
+        _context = context;
     }
 
     @Override public void run(){
@@ -72,6 +96,7 @@ public class GameThread extends Thread {
                     catch (Exception e) {
                         if(e.getMessage().equals("Game Over!")) {
                             _isGameOver = true;
+                            setHighscore();
                         }
                     }
                 }
